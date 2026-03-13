@@ -22,7 +22,7 @@ const ProjectsPage = () => {
     const [editingProject, setEditingProject] = useState<Project | null>(null);
     const [loading, setLoading] = useState(true);
 
-    // Form state
+    
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [techStack, setTechStack] = useState('');
@@ -194,7 +194,7 @@ const ProjectsPage = () => {
                 </div>
             )}
 
-            {/* Add/Edit Modal */}
+            {}
             {showModal && (
                 <div className="modal-overlay" onClick={() => setShowModal(false)}>
                     <div className="modal" onClick={(e) => e.stopPropagation()}>

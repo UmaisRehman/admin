@@ -116,8 +116,8 @@ const ProfilePage = () => {
 
         setUpdatingPassword(true);
         try {
-            // Import and call authAPI.updatePassword (Make sure it's exported from api.ts or use authAPI directly)
-            // Wait, we need to import authAPI at the top. Let's assume authAPI is imported.
+            
+            
             const { authAPI } = await import('../services/api');
             await authAPI.updatePassword(newPassword);
             toast.success('Password updated successfully!');
@@ -140,13 +140,13 @@ const ProfilePage = () => {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignItems: 'start' }}>
-                {/* Profile Form */}
+                {}
                 <div className="card">
                     <h2 style={{ fontSize: 18, fontWeight: 700, color: 'var(--neutral-50)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
                         <HiOutlineUser style={{ color: 'var(--primary-400)' }} /> Personal Info
                     </h2>
                     <form onSubmit={handleSaveProfile}>
-                        {/* Avatar */}
+                        {}
                         <div className="form-group" style={{ textAlign: 'center', marginBottom: 24 }}>
                             <div style={{
                                 width: 100, height: 100, borderRadius: '50%', margin: '0 auto 12px',
@@ -227,9 +227,9 @@ const ProfilePage = () => {
                     </form>
                 </div>
 
-                {/* Right Column (Resume & Password) */}
+                {}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-                    {/* Resume Section */}
+                    {}
                     <div className="card">
                         <h2 style={{ fontSize: 18, fontWeight: 700, color: 'var(--neutral-50)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
                             <HiOutlineDocumentText style={{ color: 'var(--primary-400)' }} /> Resume / CV
@@ -272,7 +272,7 @@ const ProfilePage = () => {
                         )}
                     </div>
 
-                    {/* Password Update Section */}
+                    {}
                     <div className="card">
                         <h2 style={{ fontSize: 18, fontWeight: 700, color: 'var(--neutral-50)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
                             <HiOutlineLockClosed style={{ color: 'var(--primary-400)' }} /> Security

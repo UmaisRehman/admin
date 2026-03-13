@@ -1,23 +1,23 @@
-// ============================================================
-// THEME CONFIG - Change colors here to update everywhere
-// ============================================================
+
+
+
 
 export const theme = {
-    // Primary brand colors
+    
     primary: {
         50: '#eef2ff',
         100: '#e0e7ff',
         200: '#c7d2fe',
         300: '#a5b4fc',
         400: '#818cf8',
-        500: '#6366f1',  // Main accent
+        500: '#6366f1',  
         600: '#4f46e5',
         700: '#4338ca',
         800: '#3730a3',
         900: '#312e81',
     },
 
-    // Neutral (backgrounds, text, borders)
+    
     neutral: {
         50: '#f8fafc',
         100: '#f1f5f9',
@@ -32,13 +32,13 @@ export const theme = {
         950: '#020617',
     },
 
-    // Status colors
+    
     success: '#10b981',
     warning: '#f59e0b',
     danger: '#ef4444',
     info: '#3b82f6',
 
-    // Gradients
+    
     gradients: {
         primary: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
         dark: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
@@ -46,7 +46,7 @@ export const theme = {
         hero: 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)',
     },
 
-    // Border radius
+    
     radius: {
         sm: '6px',
         md: '10px',
@@ -55,7 +55,7 @@ export const theme = {
         full: '9999px',
     },
 
-    // Shadows
+    
     shadows: {
         sm: '0 1px 2px rgba(0,0,0,0.05)',
         md: '0 4px 6px -1px rgba(0,0,0,0.1)',
@@ -64,18 +64,18 @@ export const theme = {
         glow: '0 0 20px rgba(99,102,241,0.3)',
     },
 
-    // Transitions
+    
     transition: {
         fast: '150ms ease',
         base: '250ms ease',
         slow: '350ms ease',
     },
 
-    // Font
+    
     fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
 };
 
-// CSS Variables helper — generates --theme-xxx: value pairs
+
 export const generateCSSVariables = (): string => {
     return `
     :root {

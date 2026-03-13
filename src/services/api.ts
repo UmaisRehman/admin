@@ -10,7 +10,7 @@ const api = axios.create({
     },
 });
 
-// Add access token to requests
+
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('accessToken');
     if (token) {
@@ -19,7 +19,7 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-// Handle 403 → refresh token
+
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -40,7 +40,7 @@ api.interceptors.response.use(
     }
 );
 
-// ============ AUTH ============
+
 export const authAPI = {
     login: (email: string, password?: string) =>
         api.post('/auth/login', { email, password }),
@@ -52,7 +52,7 @@ export const authAPI = {
         api.put('/auth/password', { newPassword }),
 };
 
-// ============ PROJECTS ============
+
 export const projectsAPI = {
     getAll: () => api.get('/projects'),
     getById: (id: string) => api.get(`/projects/${id}`),
@@ -67,7 +67,7 @@ export const projectsAPI = {
     delete: (id: string) => api.delete(`/projects/${id}`),
 };
 
-// ============ PROFILE ============
+
 export const profileAPI = {
     get: () => api.get('/profile'),
     update: (formData: FormData) =>

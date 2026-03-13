@@ -47,6 +47,11 @@ const ProfilePage = () => {
             setSkills(p.skills?.join(', ') || '');
             setAvatarUrl(p.avatarUrl || '');
             setResumeUrl(p.resumeUrl || '');
+
+            if (p.avatarUrl) {
+                const favicon = document.getElementById('favicon') as HTMLLinkElement;
+                if (favicon) favicon.href = p.avatarUrl;
+            }
         } catch {
             toast.error('Failed to load profile');
         } finally {
@@ -73,7 +78,12 @@ const ProfilePage = () => {
 
         try {
             const { data } = await profileAPI.update(formData);
-            setAvatarUrl(data.profile.avatarUrl);
+            const newAvatarUrl = data.profile.avatarUrl;
+            setAvatarUrl(newAvatarUrl);
+            if (newAvatarUrl) {
+                const favicon = document.getElementById('favicon') as HTMLLinkElement;
+                if (favicon) favicon.href = newAvatarUrl;
+            }
             toast.success('Profile updated!');
         } catch (err: any) {
             toast.error(err.response?.data?.message || 'Failed to update');

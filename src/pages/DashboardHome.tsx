@@ -19,6 +19,11 @@ const DashboardHome = () => {
             const projects = projectsRes.data.projects;
             const profile = profileRes.data.profile;
             setProfileName(profile.name || 'Admin');
+
+            if (profile?.avatarUrl) {
+                const favicon = document.getElementById('favicon') as HTMLLinkElement;
+                if (favicon) favicon.href = profile.avatarUrl;
+            }
             setStats({
                 totalProjects: projects.length,
                 featuredProjects: projects.filter((p: any) => p.featured).length,

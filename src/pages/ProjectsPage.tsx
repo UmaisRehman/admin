@@ -236,10 +236,13 @@ const ProjectsPage = () => {
                                         <input className="form-input" type="number" value={order} onChange={(e) => setOrder(Number(e.target.value))} />
                                     </div>
                                     <div className="form-group" style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: 4 }}>
-                                        <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                                            <input type="checkbox" checked={featured} onChange={(e) => setFeatured(e.target.checked)} />
-                                            Featured
-                                        </label>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                            <label className="switch">
+                                                <input type="checkbox" checked={featured} onChange={(e) => setFeatured(e.target.checked)} />
+                                                <span className="slider"></span>
+                                            </label>
+                                            <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--neutral-300)' }}>Featured</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="form-group">

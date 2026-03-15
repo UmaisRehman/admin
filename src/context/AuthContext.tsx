@@ -4,14 +4,16 @@ import { authAPI } from '../services/api';
 interface Admin {
     id: string;
     email: string;
+    username: string;
+    name: string;
 }
 
 interface AuthContextType {
     admin: Admin | null;
     isAuthenticated: boolean;
     isLoading: boolean;
-    login: (email: string, password?: string) => Promise<{ email: string }>;
-    verifyOTP: (email: string, otp: string) => Promise<void>;
+    signup: (data: { name: string; username: string; email: string; password: string }) => Promise<string>;
+    login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
 }
 
@@ -41,13 +43,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    const login = async (email: string, password?: string) => {
-        const { data } = await authAPI.login(email, password);
-        return { email: data.email };
+    const signup = async (signupData: { name: string; username: string; email: string; password: string }) => {
+        const { data } = await authAPI.signup(signupData);
+        return data.message;
     };
 
-    const verifyOTP = async (email: string, otp: string) => {
-        const { data } = await authAPI.verifyOTP(email, otp);
+    const login = async (email: string, password: string) => {
+        const { data } = await authAPI.login(email, password);
         localStorage.setItem('accessToken', data.accessToken);
         setAdmin(data.admin);
     };
@@ -64,8 +66,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 admin,
                 isAuthenticated: !!admin,
                 isLoading,
+                signup,
                 login,
-                verifyOTP,
                 logout,
             }}
         >

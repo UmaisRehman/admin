@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { projectsAPI, profileAPI } from '../services/api';
+import { projectsAPI, profileAPI, getErrorMessage } from '../services/api';
 import { HiOutlineCollection, HiOutlineClock, HiOutlineStar, HiOutlineUser } from 'react-icons/hi';
+import toast from 'react-hot-toast';
 
 const DashboardHome = () => {
     const [stats, setStats] = useState({ totalProjects: 0, featuredProjects: 0, lastUpdated: '' });
@@ -33,8 +34,8 @@ const DashboardHome = () => {
                     })
                     : 'No projects yet'
             });
-        } catch (error) {
-            console.error('Failed to fetch stats:', error);
+        } catch (error: any) {
+            toast.error(getErrorMessage(error));
         }
     };
 

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { profileAPI } from '../services/api';
+import { profileAPI, authAPI, getErrorMessage } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
-import { HiOutlineUser, HiOutlineDocumentText, HiOutlineUpload, HiOutlineTrash, HiOutlineLockClosed } from 'react-icons/hi';
+import { HiOutlineUser, HiOutlineDocumentText, HiOutlineUpload, HiOutlineTrash, HiOutlineLockClosed, HiOutlineLink } from 'react-icons/hi';
 
 const ProfilePage = () => {
+    const { admin } = useAuth();
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [name, setName] = useState('');
@@ -22,7 +24,12 @@ const ProfilePage = () => {
     const [resumeFile, setResumeFile] = useState<File | null>(null);
     const [resumeUploading, setResumeUploading] = useState(false);
 
+    // Username State
+    const [username, setUsername] = useState(admin?.username || '');
+    const [savingUsername, setSavingUsername] = useState(false);
+
     // Password Update State
+    const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [updatingPassword, setUpdatingPassword] = useState(false);
@@ -113,8 +120,31 @@ const ProfilePage = () => {
         }
     };
 
+    const handleUpdateUsername = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!username.trim()) {
+            toast.error('Username is required');
+            return;
+        }
+        setSavingUsername(true);
+        try {
+            const { data } = await authAPI.updateUsername(username);
+            localStorage.setItem('accessToken', data.accessToken);
+            setUsername(data.username);
+            toast.success(data.message);
+        } catch (err: any) {
+            toast.error(getErrorMessage(err));
+        } finally {
+            setSavingUsername(false);
+        }
+    };
+
     const handleUpdatePassword = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!currentPassword) {
+            toast.error('Current password is required');
+            return;
+        }
         if (newPassword !== confirmPassword) {
             toast.error('Passwords do not match');
             return;
@@ -126,11 +156,10 @@ const ProfilePage = () => {
 
         setUpdatingPassword(true);
         try {
-            
-            
             const { authAPI } = await import('../services/api');
-            await authAPI.updatePassword(newPassword);
+            await authAPI.updatePassword(currentPassword, newPassword);
             toast.success('Password updated successfully!');
+            setCurrentPassword('');
             setNewPassword('');
             setConfirmPassword('');
         } catch (err: any) {
@@ -150,7 +179,41 @@ const ProfilePage = () => {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignItems: 'start' }}>
-                {}
+                {/* Username & URL Card */}
+                <div className="card" style={{ gridColumn: '1 / -1' }}>
+                    <h2 style={{ fontSize: 18, fontWeight: 700, color: 'var(--neutral-50)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <HiOutlineLink style={{ color: 'var(--primary-400)' }} /> Portfolio URL
+                    </h2>
+                    <form onSubmit={handleUpdateUsername}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, alignItems: 'end' }}>
+                            <div className="form-group" style={{ marginBottom: 0 }}>
+                                <label>Username</label>
+                                <input
+                                    className="form-input"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                                    placeholder="your-username"
+                                />
+                            </div>
+                            <div className="form-group" style={{ marginBottom: 0 }}>
+                                <label>Portfolio URL (auto-generated)</label>
+                                <input
+                                    className="form-input"
+                                    value={`${window.location.origin.replace(/:\d+$/, ':5173')}/${username}`}
+                                    readOnly
+                                    disabled
+                                    style={{ opacity: 0.6, cursor: 'not-allowed' }}
+                                />
+                            </div>
+                        </div>
+                        <button type="submit" className="btn btn-primary" style={{ marginTop: 16 }} disabled={savingUsername || username === admin?.username}>
+                            {savingUsername ? 'Saving...' : 'Update Username'}
+                        </button>
+                    </form>
+                </div>
+
+
+                {/* Personal Info Card */}
                 <div className="card">
                     <h2 style={{ fontSize: 18, fontWeight: 700, color: 'var(--neutral-50)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
                         <HiOutlineUser style={{ color: 'var(--primary-400)' }} /> Personal Info
@@ -289,6 +352,17 @@ const ProfilePage = () => {
                         </h2>
 
                         <form onSubmit={handleUpdatePassword}>
+                            <div className="form-group">
+                                <label>Current Password</label>
+                                <input
+                                    type="password"
+                                    className="form-input"
+                                    value={currentPassword}
+                                    onChange={(e) => setCurrentPassword(e.target.value)}
+                                    placeholder="Enter current password"
+                                    required
+                                />
+                            </div>
                             <div className="form-group">
                                 <label>New Password</label>
                                 <input

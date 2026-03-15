@@ -18,7 +18,6 @@ const DashboardLayout = () => {
             <aside className="sidebar">
                 <div className="sidebar-header">
                     <div className="sidebar-brand">
-                        <div className="sidebar-brand-icon">⚡</div>
                         <span>Portfolio</span>
                     </div>
                 </div>

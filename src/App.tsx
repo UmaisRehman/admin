@@ -8,6 +8,7 @@ import DashboardLayout from './pages/DashboardLayout';
 import DashboardHome from './pages/DashboardHome';
 import ProjectsPage from './pages/ProjectsPage';
 import ProfilePage from './pages/ProfilePage';
+import AiStudioPage from './pages/AiStudioPage';
 import './index.css';
 
 const AppRoutes = () => {
@@ -23,6 +24,7 @@ const AppRoutes = () => {
         </ProtectedRoute>
       }>
         <Route index element={<DashboardHome />} />
+        <Route path="studio" element={<AiStudioPage />} />
         <Route path="projects" element={<ProjectsPage />} />
         <Route path="profile" element={<ProfilePage />} />
       </Route>

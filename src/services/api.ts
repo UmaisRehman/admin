@@ -93,4 +93,85 @@ export const profileAPI = {
         }),
 };
 
+export const portfolioConfigAPI = {
+    getDraft: () =>
+        api.get<{
+            success: boolean;
+            draft: import('../config/portfolioConfig').PortfolioConfig;
+            published: import('../config/portfolioConfig').PortfolioConfig | null;
+            draftUpdatedAt: string;
+            publishedAt: string | null;
+            isDefault: boolean;
+        }>('/portfolio-config/draft'),
+    saveDraft: (config: import('../config/portfolioConfig').PortfolioConfig) =>
+        api.put<{
+            success: boolean;
+            message: string;
+            draft: import('../config/portfolioConfig').PortfolioConfig;
+        }>('/portfolio-config/draft', { config }),
+    publish: (note?: string, source: 'manual' | 'ai' = 'manual') =>
+        api.post<{
+            success: boolean;
+            message: string;
+            published: import('../config/portfolioConfig').PortfolioConfig;
+            publishedAt: string;
+            versionId: string;
+        }>('/portfolio-config/publish', { note, source }),
+    getVersions: () =>
+        api.get<{
+            success: boolean;
+            versions: Array<{ _id: string; note: string; source: string; createdAt: string }>;
+        }>('/portfolio-config/versions'),
+    rollback: (versionId: string, applyLive = false) =>
+        api.post<{
+            success: boolean;
+            message: string;
+            draft: import('../config/portfolioConfig').PortfolioConfig;
+            published: import('../config/portfolioConfig').PortfolioConfig | null;
+        }>(`/portfolio-config/rollback/${versionId}`, { applyLive }),
+    reset: () =>
+        api.post<{
+            success: boolean;
+            message: string;
+            draft: import('../config/portfolioConfig').PortfolioConfig;
+        }>('/portfolio-config/reset'),
+};
+
+export const aiAPI = {
+    chat: (message: string, history?: any[], currentConfig?: import('../config/portfolioConfig').PortfolioConfig) =>
+        api.post<{
+            success: boolean;
+            reply: string;
+            proposedConfig?: import('../config/portfolioConfig').PortfolioConfig;
+            proposedBio?: string;
+            action?: string;
+        }>('/ai/chat', { message, history, currentConfig }),
+    extractGitHub: (urlOrUsername: string) =>
+        api.post<{
+            success: boolean;
+            message: string;
+            data: {
+                username: string;
+                name: string;
+                bio: string;
+                location: string;
+                avatarUrl: string;
+                blog: string;
+                company: string;
+                skills: string[];
+                suggestedProjects: Array<{
+                    title: string;
+                    tagline: string;
+                    category: string;
+                    technologies: string[];
+                    githubUrl: string;
+                    liveUrl: string;
+                    stars: number;
+                }>;
+            };
+        }>('/ai/extract-github', { urlOrUsername }),
+    polishBio: (rawText: string) =>
+        api.post<{ success: boolean; polishedBio: string }>('/ai/polish-bio', { rawText }),
+};
+
 export default api;
